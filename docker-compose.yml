@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: estudantes_db
+    volumes:
+      - dados-bd:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - rede-app
+
+  backend:
+    build: ./backend
+    container_name: php-backend
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    networks:
+      - rede-app
+
+  frontend:
+    build: ./frontend
+    container_name: vue-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - rede-app
+
+volumes:
+  dados-bd:
+
+networks:
+  rede-app:
