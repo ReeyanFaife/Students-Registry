@@ -1,8 +1,8 @@
 <?php
-$host = "db";
-$db = "estudantes_db";
-$user = "root";
-$pass = "root";
+$host = getenv('DB_HOST') ?: 'db';
+$db = getenv('DB_NAME') ?: 'estudantes_db';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASSWORD') ?: 'root';
 
 $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -157,7 +157,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import axios from 'axios'
 import Login from './Login.vue'
 
-const API = 'http://localhost:8000'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 const autenticado = ref(false)
 const usuario = ref(null)
