@@ -1,9 +1,9 @@
 <?php
-$host = getenv('MYSQLHOST')     ?: 'localhost';
-$db   = getenv('MYSQLDATABASE') ?: 'estudantes_db';
-$user = getenv('MYSQLUSER')     ?: 'root';
-$pass = getenv('MYSQLPASSWORD') ?: '';
-$port = getenv('MYSQLPORT')     ?: '3306';
+$host = getenv('DB_HOST') ?: getenv('MYSQLHOST') ?: 'db';
+$db   = getenv('DB_NAME') ?: getenv('MYSQLDATABASE') ?: 'estudantes_db';
+$user = getenv('DB_USER') ?: getenv('MYSQLUSER') ?: 'root';
+$pass = getenv('DB_PASSWORD') ?: getenv('MYSQLPASSWORD') ?: 'root';
+$port = getenv('DB_PORT') ?: getenv('MYSQLPORT') ?: '3306';
 
 try {
     $conn = new PDO(
