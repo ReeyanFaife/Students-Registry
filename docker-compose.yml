@@ -30,7 +30,10 @@ services:
       - rede-app
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL}
     container_name: vue-frontend
     ports:
       - "3000:80"
