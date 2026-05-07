@@ -1,16 +1,14 @@
 services:
   db:
-    image: mysql:8.0
-    container_name: mysql-db
+    image: postgres:16
+    container_name: postgres-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_PORT: ${MYSQL_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - dados-bd:/var/lib/mysql
+      - dados-pg:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - rede-app
@@ -44,7 +42,7 @@ services:
       - rede-app
 
 volumes:
-  dados-bd:
+  dados-pg:
 
 networks:
   rede-app:
