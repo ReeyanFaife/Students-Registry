@@ -58,11 +58,35 @@
 
         <label class="input-group">
           <span>Senha</span>
-          <div>
+          <div class="password-field">
             <i class="fa-solid fa-lock"></i>
-            <input v-model="form.senha" type="password" placeholder="Digite a senha" required />
+            <input
+              v-model="form.senha"
+              :type="mostrarSenha ? 'text' : 'password'"
+              placeholder="Digite a senha"
+              :autocomplete="modo === 'login' ? 'current-password' : 'new-password'"
+              minlength="6"
+              pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}"
+              title="A senha deve ter no minimo 6 caracteres, com letras e numeros."
+              required
+            />
+            <button
+              class="toggle-password"
+              type="button"
+              :aria-label="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'"
+              :title="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'"
+              @click="mostrarSenha = !mostrarSenha"
+            >
+              <i :class="mostrarSenha ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+            </button>
           </div>
+          <small v-if="modo === 'register'">Use pelo menos 6 caracteres com letras e numeros.</small>
         </label>
+
+        <p v-if="sucesso && modo === 'login'" class="message success">
+          <i class="fa-solid fa-circle-check"></i>
+          {{ sucesso }}
+        </p>
 
         <p v-if="erro" class="message error">
           <i class="fa-solid fa-circle-exclamation"></i>
@@ -75,31 +99,44 @@
         </button>
       </form>
     </section>
+
+    <footer class="login-footer">Copyright 2026 Reeyan Faife</footer>
   </main>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-defineProps({
+const props = defineProps({
   erro: {
     type: String,
     default: ''
+  },
+  sucesso: {
+    type: String,
+    default: ''
+  },
+  cadastroConcluido: {
+    type: Number,
+    default: 0
   }
 })
 
-const emit = defineEmits(['login', 'register'])
+const emit = defineEmits(['login', 'register', 'clear-feedback'])
 
 const modo = ref('login')
 const form = ref({ nome: '', email: '', senha: '' })
+const mostrarSenha = ref(false)
 
 const limpar = () => {
   form.value = { nome: '', email: '', senha: '' }
+  mostrarSenha.value = false
 }
 
 const trocarModo = (novoModo) => {
   modo.value = novoModo
   limpar()
+  emit('clear-feedback')
 }
 
 const submeter = () => {
@@ -110,15 +147,22 @@ const submeter = () => {
 
   emit('register', { ...form.value })
 }
+
+watch(() => props.cadastroConcluido, () => {
+  modo.value = 'login'
+  limpar()
+})
 </script>
 
 <style scoped>
 .login-shell {
   display: grid;
+  grid-template-rows: 1fr auto;
   width: min(100% - 32px, 980px);
   min-height: 100vh;
   margin: 0 auto;
-  place-items: center;
+  align-items: center;
+  justify-items: center;
   padding: 32px 0;
 }
 
@@ -240,7 +284,7 @@ h1 {
   position: relative;
 }
 
-.input-group i {
+.input-group div > i {
   position: absolute;
   left: 14px;
   top: 50%;
@@ -258,6 +302,40 @@ h1 {
   background: #f8fafc;
   outline: none;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.input-group small {
+  display: block;
+  margin-top: 7px;
+  color: #64748b;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.password-field input {
+  padding-right: 48px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 8px;
+  color: #475569;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.toggle-password:hover,
+.toggle-password:focus-visible {
+  color: #0369a1;
+  background: #e0f2fe;
+  outline: none;
 }
 
 .input-group input:focus {
@@ -307,6 +385,20 @@ h1 {
   margin-bottom: 16px;
   color: #991b1b;
   background: #fee2e2;
+}
+
+.message.success {
+  margin-bottom: 16px;
+  color: #166534;
+  background: #dcfce7;
+}
+
+.login-footer {
+  margin-top: 18px;
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
 }
 
 @media (max-width: 860px) {

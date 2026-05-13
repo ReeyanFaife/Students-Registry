@@ -2,7 +2,7 @@
 $databaseUrl = getenv('DATABASE_URL') ?: getenv('POSTGRES_URL') ?: getenv('POSTGRES_PUBLIC_URL') ?: '';
 
 $host = getenv('DB_HOST') ?: getenv('PGHOST') ?: 'db';
-$db   = getenv('DB_NAME') ?: getenv('PGDATABASE') ?: 'estudantes_db';
+$db = getenv('DB_NAME') ?: getenv('PGDATABASE') ?: 'estudantes_db';
 $user = getenv('DB_USER') ?: getenv('PGUSER') ?: 'postgres';
 $pass = getenv('DB_PASSWORD') ?: getenv('PGPASSWORD') ?: 'postgres';
 $port = getenv('DB_PORT') ?: getenv('PGPORT') ?: '5432';
@@ -35,11 +35,7 @@ try {
         $dsn .= ";sslmode=$sslmode";
     }
 
-    $conn = new PDO(
-        $dsn,
-        $user,
-        $pass
-    );
+    $conn = new PDO($dsn, $user, $pass);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $conn->exec("
@@ -69,7 +65,6 @@ try {
         $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
         $stmt->execute(["Administrador", "admin@escola.co.mz", "admin123"]);
     }
-
 } catch (PDOException $e) {
     http_response_code(500);
     die(json_encode(["erro" => "Falha na BD: " . $e->getMessage()]));

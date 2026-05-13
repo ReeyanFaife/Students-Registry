@@ -1,8 +1,30 @@
 # Student Registry
 
-O Student Registry e um sistema simples para gerir o registo de estudantes. A aplicacao permite autenticar o utilizador e trabalhar com informacoes de estudantes guardadas numa base de dados MySQL.
+O Student Registry e um sistema simples para gerir o registo de estudantes. A aplicacao permite autenticar o utilizador e trabalhar com informacoes de estudantes guardadas numa base de dados PostgreSQL.
 
-O projeto e composto por um frontend em Vue, um backend em PHP e uma base de dados MySQL, executados localmente com Docker Compose.
+O projeto e composto por um frontend em Vue, um backend em PHP e uma base de dados PostgreSQL, executados localmente com Docker Compose e pela web atraves do link https://students-registry-frontend.onrender.com/.
+
+## Relatório do sistema
+
+- Funcionalidade principal: registrar, listar, editar e remover estudantes.
+- Login e registro: o usuario pode autenticar-se e criar uma conta com email e senha.
+- API REST simples: endpoints para CRUD de estudantes e autenticação de usuarios.
+- Relatorio de estudantes: gera um download CSV com os registros atuais.
+- Persistencia: dados salvos em PostgreSQL, inicializados automaticamente por `database/init.sql`.
+
+## Tecnologias usadas
+
+- Frontend:
+  - `Vue 3` para a interface reativa.
+  - `Vite` como bundler de desenvolvimento e build.
+  - `Axios` para chamadas HTTP ao backend.
+- Backend:
+  - `PHP 8.2` com Apache para servir a API.
+  - `PDO` para conecção com PostgreSQL.
+- Base de dados:
+  - `PostgreSQL 16` para armazenar estudantes e usuarios.
+- Infraestrutura:
+  - `Docker` e `Docker Compose` para orquestrar frontend, backend e banco de dados.
 
 ## Pre-requisitos
 
@@ -12,12 +34,10 @@ Antes de iniciar, confirme que tem instalado:
 - Docker Compose
 
 Para verificar:
-
 ```bash
 docker --version
 docker compose version
 ```
-
 ## Como executar localmente
 
 Na raiz do projeto, execute:
@@ -25,10 +45,9 @@ Na raiz do projeto, execute:
 ```bash
 docker compose up --build
 ```
-
 Este comando cria e inicia os seguintes servicos:
 
-- `db`: base de dados MySQL 8.0
+- `db`: base de dados PostgreSQL 16
 - `backend`: API PHP exposta em `http://localhost:8000`
 - `frontend`: aplicacao Vue exposta em `http://localhost:3000`
 
@@ -87,7 +106,7 @@ docker compose up --build
 |----------|-------------------------|
 | Frontend | http://localhost:3000   |
 | Backend  | http://localhost:8000   |
-| MySQL    | Apenas na rede Docker   |
+| PostgreSQL | Apenas na rede Docker |
 
 ## Estrutura principal
 

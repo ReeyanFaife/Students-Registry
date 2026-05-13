@@ -1,0 +1,9 @@
+{
+  "git.decorations.enabled": false,
+  "explorer.decorations.colors": false,
+  "explorer.decorations.badges": false,
+  "workbench.editor.decorations.badges": false,
+  "files.associations": {
+    "*.vue": "vue"
+  }
+}
