@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: students-registry-backend
+    runtime: docker
+    plan: free
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: students-registry-db
+          property: connectionString
+      - key: DB_SSLMODE
+        value: require
+
+  - type: web
+    name: students-registry-frontend
+    runtime: docker
+    plan: free
+    dockerContext: ./frontend
+    dockerfilePath: ./frontend/Dockerfile
+    envVars:
+      - key: VITE_API_URL
+        value: https://students-registry-backend.onrender.com
+
+databases:
+  - name: students-registry-db
+    plan: free
+    databaseName: estudantes_db
+    user: estudantes_user
